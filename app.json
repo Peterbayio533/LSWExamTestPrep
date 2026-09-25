@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "NJ LSW Prep",
+    "slug": "nj-lsw-prep",
+    "scheme": "njlswprep",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.yourname.njlswprep"
+    },
+    "plugins": ["expo-router", "expo-notifications"]
+  }
+}
