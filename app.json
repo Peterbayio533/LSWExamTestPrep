@@ -10,6 +10,11 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.yourname.njlswprep"
     },
-    "plugins": ["expo-router", "expo-notifications"]
+    "plugins": [
+      "expo-router",
+      "expo-notifications",
+      "expo-status-bar",
+      "expo-font"
+    ]
   }
 }

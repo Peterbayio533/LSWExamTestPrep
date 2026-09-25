@@ -1,11 +1,12 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Tabs } from 'expo-router';
 import React from 'react';
+import type { ColorValue } from 'react-native';
 import { colors, type IconName } from '../../src/theme';
 
 const icon =
   (name: IconName) =>
-  ({ color, size }: { color: string; size: number }) => <Ionicons name={name} color={color} size={size} />;
+  ({ color, size }: { color: ColorValue; size: number }) => <Ionicons name={name} color={color} size={size} />;
 
 export default function TabsLayout() {
   return (
