@@ -3,7 +3,7 @@ import * as Haptics from 'expo-haptics';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Alert, Pressable, ScrollView, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { QuestionCard } from '../src/components/QuestionCard';
 import { Button, Card, ProgressBar, styles } from '../src/components/ui';
 import { DOMAINS, DOMAIN_BY_ID, type DomainId } from '../src/data/exam';
@@ -22,7 +22,17 @@ const TITLES: Record<QuizMode, string> = {
 
 const fmtClock = (sec: number) => `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
 
+// iOS full-screen modals don't inherit safe-area insets from the root provider,
+// so the quiz measures its own; otherwise the header slides under the status bar.
 export default function QuizScreen() {
+  return (
+    <SafeAreaProvider>
+      <QuizContent />
+    </SafeAreaProvider>
+  );
+}
+
+function QuizContent() {
   const params = useLocalSearchParams<{ mode?: string; domain?: string }>();
   const mode = (params.mode ?? 'daily') as QuizMode;
   const domain = params.domain as DomainId | undefined;
@@ -204,10 +214,23 @@ export default function QuizScreen() {
   const domainColor = DOMAIN_BY_ID[q.domain].color;
   return (
     <SafeAreaView style={styles.safe}>
-      <View style={{ paddingHorizontal: 16, paddingTop: 8, gap: 10 }}>
+      <View style={{ paddingHorizontal: 12, paddingTop: 12, gap: 10 }}>
         <View style={[styles.row, { justifyContent: 'space-between' }]}>
-          <Pressable onPress={close} hitSlop={12}>
-            <Ionicons name="close" size={28} color={colors.muted} />
+          <Pressable
+            onPress={close}
+            hitSlop={8}
+            accessibilityRole="button"
+            accessibilityLabel="Close quiz"
+            style={({ pressed }) => ({
+              width: 44,
+              height: 44,
+              borderRadius: 22,
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: pressed ? colors.border : colors.card,
+            })}
+          >
+            <Ionicons name="close" size={26} color={colors.text} />
           </Pressable>
           <Text style={{ fontWeight: '800', color: colors.text }}>{TITLES[mode]}</Text>
           {isMock ? (
