@@ -44,14 +44,24 @@ All data is stored on the device (AsyncStorage). No account or server is needed.
    ```
 4. Add an app icon (`icon` in `app.json`, 1024×1024 PNG) before submitting.
 
-## Adding or updating content
+## Content and sources
 
-- **Questions:** `src/data/questions.ts`. Add objects with `domain`, `topic`, `stem`, `options` (3 or 4), `answer` (the index), and `rationale`. Options are shuffled when shown, so don't use "all of the above."
+The bank has **165 original questions** (56 Values & Ethics, 54 Assessment & Planning, 55 Intervention & Practice).
+Every question is tagged to a competency in the **official ASWB 2026 Masters content outline** (IA–IIID) and cites
+the authority behind its answer: the NASW Code of Ethics (by section), NJ law (N.J.A.C. 13:44G, N.J.S.A. 9:6-8.10,
+N.J.S.A. 2A:62A-16), federal law (HIPAA, 42 C.F.R. Part 2, ICWA, ASFA, and others), DSM-5-TR, or texts from ASWB's
+own reference list. The app shows these citations after each answer, with links to the source where one exists.
+
+- **Questions:** `src/data/questions/{ethics,assessment,intervention}.ts`. Each item has `id`, `competency`,
+  `topic`, `stem`, `options` (3 or 4), `answer` (the index), `rationale`, and `refs`. Keep ids stable once
+  published, since progress is stored by id. Options are shuffled when shown, so never use "all of the above."
+  Keep the correct option from being the longest, because test-takers learn to spot that.
+- **Sources:** `src/data/sources.ts` (citation registry) and `src/data/outline.ts` (ASWB competencies).
 - **Study guide:** `src/data/studyGuide.ts`
 - **Blueprint and weights:** `src/data/exam.ts`. Bump `contentVersion` when you update content.
 
-For a larger question bank (the goal should be 300 or more), write items against the official **ASWB Exam Guidebook**
-content outline. Do not copy questions from commercial prep products.
+Do not copy questions from commercial prep products, which are copyrighted. Write original items against the
+ASWB outline and cite primary sources.
 
 ## Project layout
 

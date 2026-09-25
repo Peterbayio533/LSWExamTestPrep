@@ -2,8 +2,12 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
+import { SourceList } from '../../src/components/SourceList';
 import { Button, Card, Screen, SectionTitle, styles } from '../../src/components/ui';
-import { DOMAINS, EXAM_INFO } from '../../src/data/exam';
+import { DOMAIN_BY_ID, DOMAINS, EXAM_INFO } from '../../src/data/exam';
+import { COMPETENCIES } from '../../src/data/outline';
+import { QUESTIONS } from '../../src/data/questions';
+import { SOURCES, type Ref, type SourceId } from '../../src/data/sources';
 import { STUDY_TOPICS } from '../../src/data/studyGuide';
 import { XP } from '../../src/lib/gamification';
 import { useProgress } from '../../src/state/ProgressContext';
@@ -24,6 +28,7 @@ export default function StudyScreen() {
           {EXAM_INFO.timeLimitMinutes / 60}-hour limit, three content areas, and a mix of 3- and 4-option questions.
         </Text>
         <Text style={styles.muted}>Pacing: about 2 minutes per question. Scoring is scaled pass/fail.</Text>
+        <SourceList refs={[{ s: 'aswb' }, { s: 'njac', at: '13:44G-4.2' }]} />
       </Card>
 
       {DOMAINS.map((d) => (
@@ -58,6 +63,8 @@ export default function StudyScreen() {
                       <Text style={{ fontWeight: '800', color: d.color }}>Exam tip</Text>
                       <Text style={styles.body}>{t.examTip}</Text>
                     </View>
+                    <Text style={[styles.muted, { fontWeight: '700' }]}>ASWB outline: {t.competencies.join(', ')}</Text>
+                    <SourceList refs={t.refs} />
                     <View style={[styles.row, { gap: 10 }]}>
                       <View style={{ flex: 1 }}>
                         <Button
@@ -82,6 +89,32 @@ export default function StudyScreen() {
           })}
         </View>
       ))}
+
+      <SectionTitle>Official outline coverage</SectionTitle>
+      <Text style={styles.muted}>
+        Every practice question is tagged to a competency in the ASWB 2026 Masters content outline.
+      </Text>
+      <Card style={{ gap: 10 }}>
+        {COMPETENCIES.map((c) => {
+          const count = QUESTIONS.filter((q) => q.competency === c.id).length;
+          return (
+            <View key={c.id} style={[styles.row, { justifyContent: 'space-between' }]}>
+              <Text style={{ width: 44, fontWeight: '800', color: DOMAIN_BY_ID[c.domain].color }}>{c.id}</Text>
+              <Text style={[styles.body, { flex: 1 }]}>{c.name}</Text>
+              <Text style={styles.muted}>{count} Qs</Text>
+            </View>
+          );
+        })}
+      </Card>
+
+      <SectionTitle>Primary sources</SectionTitle>
+      <Card>
+        <SourceList title="Standards, law & exam blueprint" refs={PRIMARY_SOURCES} />
+      </Card>
     </Screen>
   );
 }
+
+const PRIMARY_SOURCES: Ref[] = (Object.keys(SOURCES) as SourceId[])
+  .filter((id) => ['exam', 'ethics', 'nj-law'].includes(SOURCES[id].kind))
+  .map((s) => ({ s }));

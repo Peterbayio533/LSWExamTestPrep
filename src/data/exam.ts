@@ -1,8 +1,8 @@
 import type { IconName } from '../theme';
 
-// Blueprint for the ASWB Masters exam (required for the NJ LSW), effective Aug 3, 2026.
-// Domain weights are approximate published figures; confirm against the official
-// ASWB Exam Guidebook when updating content.
+// Blueprint for the ASWB Masters exam (required for the NJ LSW, N.J.A.C. 13:44G-4.2),
+// effective Aug 3, 2026. Weights and format verified against the ASWB Examination
+// Guidebook (08/2026): 122 questions (110 scored), 4 hours, 3- and 4-option items.
 
 export type DomainId = 'ethics' | 'assessment' | 'intervention';
 
@@ -64,5 +64,5 @@ export const EXAM_INFO = {
   pretestQuestions: 12,
   timeLimitMinutes: 240,
   secondsPerQuestion: 120,
-  contentVersion: '2026.09',
+  contentVersion: '2026.09.2',
 };

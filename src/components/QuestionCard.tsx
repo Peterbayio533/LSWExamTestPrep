@@ -2,8 +2,10 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { DOMAIN_BY_ID } from '../data/exam';
+import { COMPETENCY_BY_ID } from '../data/outline';
 import type { Question } from '../data/questions';
 import { colors, radius } from '../theme';
+import { SourceList } from './SourceList';
 
 const LETTERS = ['A', 'B', 'C', 'D'];
 
@@ -22,7 +24,7 @@ export function QuestionCard({ question, order, selected, revealed, onSelect }: 
     <View style={{ gap: 12 }}>
       <View style={[s.tag, { backgroundColor: domain.softColor }]}>
         <Text style={[s.tagText, { color: domain.color }]}>
-          {domain.short} · {question.topic}
+          {question.competency} · {question.topic}
         </Text>
       </View>
       <Text style={s.stem}>{question.stem}</Text>
@@ -63,6 +65,11 @@ export function QuestionCard({ question, order, selected, revealed, onSelect }: 
         <View style={s.rationale}>
           <Text style={s.rationaleTitle}>Why</Text>
           <Text style={s.rationaleText}>{question.rationale}</Text>
+          <View style={s.divider} />
+          <Text style={s.outline}>
+            ASWB outline {question.competency}: {COMPETENCY_BY_ID[question.competency].name}
+          </Text>
+          <SourceList refs={question.refs} />
         </View>
       ) : null}
     </View>
@@ -94,4 +101,6 @@ const s = StyleSheet.create({
   rationale: { backgroundColor: colors.primarySoft, borderRadius: radius.md, padding: 14, gap: 4 },
   rationaleTitle: { fontWeight: '800', color: colors.primary },
   rationaleText: { fontSize: 15, lineHeight: 22, color: colors.text },
+  divider: { height: StyleSheet.hairlineWidth, backgroundColor: colors.border, marginVertical: 6 },
+  outline: { fontSize: 12, fontWeight: '700', color: colors.muted },
 });
